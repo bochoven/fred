@@ -2,7 +2,11 @@
 
     <div class="container">
       <div class="row">
-        <div class="span12">
+        <div class="span4">
+          <h2><i class="icon-calendar"></i> Calendar</h2>
+          <p>Click on a reservation to see the details.</p>
+        </div>
+        <div class="span8">
           <div id="calendar"></div>
         </div>
       </div><!--/row-->
@@ -29,9 +33,9 @@
 
   $('#calendar').fullCalendar({
       header: {
-        right: 'today prev,next',
+        left: 'prev,next today',
         center: 'title',
-        left: ''
+        right: 'prevYear,nextYear'
       },
       editable: false,
       events: "<?=url('user/json_events')?>",

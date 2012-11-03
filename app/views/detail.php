@@ -20,10 +20,6 @@
 			<td><?=$item->cat?></td>
 		</tr>
 		<tr>
-			<th>Subcategory</th>
-			<td><?=$item->subcat?></td>
-		</tr>
-		<tr>
 			<th>Serial Number</th>
 			<td><?=$item->serial?></td>
 		</tr>

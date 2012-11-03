@@ -46,15 +46,26 @@
 
     	<select name="item" id="item">
 
-        <?$item = new Item(); $p_article = (object) array('name' => '', 'cat' => '', 'subcat' => '')?>
-      <?foreach($item->retrieve_many('1=1 ORDER BY cat, subcat, name') as $article):?>
-        <?if($article->cat == $p_article->cat && $article->subcat == $p_article->subcat && $article->name == $p_article->name):?>
+        <?$item = new Item(); $p_article = (object) array('short' => '', 'cat' => ''); $cat=''?>
+      <?foreach($item->retrieve_many('1=1 ORDER BY cat, short') as $article):?>
+
+
+        <?if($article->short == $p_article->short):?>
           <?$p_article->cnt++?>
           <?$p_article->rs['multi'] = 1?>
         <?else:?>
+
+          <?if($p_article->cat != $cat):?>
+            <?if($cat):?>
+            </optgroup>
+            <?endif?>
+            <optgroup label="<?=$p_article->cat?>">
+            <?$cat = $p_article->cat?>
+          <?endif?>
+
         
-          <?if($p_article->name):?>
-                  <option value="<?=$p_article->id?>"><?=$p_article->name?></option>
+          <?if($p_article->short):?>
+                  <option value="<?=$p_article->short?>"><?=$p_article->name?></option>
           <?endif?>
         
           <?$p_article = $article?>
@@ -62,6 +73,7 @@
         <?endif?>
       <?endforeach?>
 
+        </optgroup>
     	</select>
 		per
     	<select name="per" id="per">
@@ -176,7 +188,7 @@
           // Add row to table
           $('#item_list tr:last').after('<tr><td><span data-item="'+val+'" data-amt="'+amt+'" data-per="'+per+'" class="badge badge-info">'+netto_amt+'</span><i>'+name+'</i></td>\
             <td style="text-align:right"><a href="" class="icon-edit edit-row"> edit</a>\
-            <a href="" class="icon-minus-sign text-error remove-row"> remove</a></td></tr>');
+            <a href="" class="icon-trash text-error remove-row"> remove</a></td></tr>');
           
           // remove row
           $('a.remove-row').click(function(e){

@@ -29,16 +29,15 @@ class admin extends Controller
 					
 					// Translation table between excel and db
 					$colinfo = array(	1 => 'cat', 
-										2 => 'subcat', 
-										3 => 'prop Koeling', 
-										4 => 'loc',
-										5 => 'idnr',
-										6 => 'name',
-										7 => 'brand',
-										8 => 'serial',
-										9 => 'prop Keuze',
-										10 => 'prop Bijzonderheden',
-										11 => 'cnt');
+										2 => 'short', 
+										3 => 'loc',
+										4 => 'idnr',
+										5 => 'name',
+										6 => 'brand',
+										7 => 'serial',
+										8 => 'prop Keuze',
+										9 => 'prop Bijzonderheden',
+										10 => 'cnt');
 					
 					
 

@@ -5,9 +5,10 @@ class Item extends Model {
         {
 			parent::__construct('id','item'); //primary key, tablename
 			$this->rs['id'] = 0;
+			$this->rs['short'] = '';
 			$this->rs['name'] = '';
 			$this->rs['cat'] = '';
-			$this->rs['subcat'] = '';
+			$this->rs['short'] = '';
 			$this->rs['loc'] = '';
 			$this->rs['idnr'] = '';
 			$this->rs['brand'] = '';

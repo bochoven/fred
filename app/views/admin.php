@@ -2,7 +2,7 @@
 
     <div class="container">
       <div class="row">
-          <h2 class="span12">Database administration</h2>
+          <h2 class="span12"><i class="icon-wrench"></i> Database administration</h2>
       </div><!--/row-->
       <div class="row">
         <form class="well span3" action="<?=url('admin/submit')?>" enctype="multipart/form-data"  method="post" accept-charset="utf-8">

@@ -54,6 +54,7 @@ class user extends Controller
 
 		$reservation = new Reservation($id);
 		$reservation->merge($_POST);
+		$reservation->user_id = 'test_user'; // Fixme
 		$reservation->save();
 
 		if( ! $id)

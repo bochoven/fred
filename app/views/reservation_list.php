@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row">
         <div class="span12">
-          <h2>Reservations <a href="<?=url("user/reservation/")?>" id="add-item" class="btn btn-primary pull-right"><b class="icon-plus"></b> New reservation</a></h2>
+          <h2><b class="icon-beaker"></b> Reservations <a href="<?=url("user/reservation/")?>" id="add-item" class="btn btn-primary pull-right"><b class="icon-plus"></b> New reservation</a></h2>
           <?$resobj = new Reservation()?>
 <table class="table table-striped">
 	<thead>
@@ -27,7 +27,7 @@
 		<td><?=$res->user_id?></td>
 		<td><?=$res->status?></td>
 		<td><?=$res->res_date?></td>
-		<td><a href="<?=url("user/delete_reservation/$res->id")?>" class="icon-minus-sign text-error remove-row"> remove</a></td>
+		<td style="text-align: right"><a href="#" class="icon-copy"> Copy</a> <a href="<?=url("user/delete_reservation/$res->id")?>" class="icon-trash text-error remove-row"> remove</a></td>
 	</tr>
 
 	<?endforeach?>

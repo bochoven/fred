@@ -60,10 +60,10 @@
               Logged in as <a href="#" class="navbar-link">Username</a>
             </p>
             <ul class="nav">
-              <li class="active"><a href="<?=url()?>">Inventory list</a></li>
-              <li><a href="<?=url('user/reservations')?>">Reservations</a></li>
-              <li><a href="<?=url('user/calendar')?>">Calendar</a></li>
-              <li><a href="<?=url('admin')?>">Administration</a></li>
+              <li class="active"><a href="<?=url()?>"><i class="icon-list-ul"></i> Inventory list</a></li>
+              <li><a href="<?=url('user/reservations')?>"><i class="icon-beaker"></i> Reservations</a></li>
+              <li><a href="<?=url('user/calendar')?>"><i class="icon-calendar"></i> Calendar</a></li>
+              <li><a href="<?=url('admin')?>"><i class="icon-wrench"></i> Administration</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
