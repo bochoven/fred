@@ -17,6 +17,7 @@
             <a href="<?=url("user/reservation/$id")?>" class="btn btn-danger cancel hide">Cancel</a>
 
       			<button type="submit" class="btn btn-primary hide pull-right">Save</button>
+            <input type="hidden" name="item_list">
     			</form>
 
         </div><!--/span-->
@@ -27,6 +28,19 @@
          			<th>Item</th>
          			<th></th>
          		</tr>
+            <?$dbh = getdbh(); 
+            $sql = "SELECT DISTINCT r.*, i.name FROM res_item r LEFT JOIN item i ON (r.short = i.short) WHERE r.res_id = $id";
+            $stmt = $dbh->prepare( $sql );
+            $stmt->execute();
+            ?>
+            <?while ( $item = $stmt->fetch( PDO::FETCH_OBJ ) ):?>
+            <tr>
+              <td><span data-item="<?=$item->short?>" data-amt="<?=$item->amt?>" data-per="<?=$item->per?>" class="badge badge-info"><?=$item->amt?></span><i><?=$item->name?></i></td>
+              <td style="text-align:right"><a href="" class="icon-edit edit-row"> edit</a>
+              <a href="" class="icon-trash text-error remove-row"> remove</a>
+              </td>
+            </tr>
+            <?endwhile?>
          	</table>
          	<p style="text-align: center">
          	<a href="/" id="add-item" class="btn btn-primary"><b class="icon-plus"></b> Add item</a>
@@ -103,13 +117,25 @@
 
   // Show submit and cancel button when a field is changed
   $('#new_course input').focus(function() {
-    $('#new_course button').removeClass('btn-success').addClass('btn-primary').fadeIn(1000);
-    $('#new_course a.cancel').fadeIn(1000);
+    show_buttons();
   })
+
+  // Update item list with correct numbers
+  update_item_list();
+  add_item_events();
 
   // On submit reservation
 	$('#new_course').submit(function(e){
 		e.preventDefault();
+
+    // Collect item list
+    var item_list = Array();
+    $('#item_list tr .badge').each(function(i){
+      item_list.push({'short':$(this).data('item'), 'amt':$(this).data('amt'), 'per':$(this).data('per')});
+    });
+
+    // Store item_list in form
+    $(this).find('input[name=item_list]').val(JSON.stringify(item_list));
 
 		$.post( $(this).attr('action'), $(this).serialize(),
 		  function( data ) {
@@ -150,6 +176,42 @@
       });
   }
 
+  function show_buttons()
+  {
+    $('#new_course button').removeClass('btn-success').addClass('btn-primary').fadeIn(1000);
+    $('#new_course a.cancel').fadeIn(1000);
+  }
+
+  function add_item_events()
+  {
+    // remove row
+    $('a.remove-row').click(function(e){
+      e.preventDefault();
+      $(this).closest('tr').remove();
+      show_buttons();
+    });
+
+    // Edit
+    $('a.edit-row').click(function(e){
+      e.preventDefault();
+
+      // Find corresponding badge
+      var badge = $(this).closest('tr').find('.badge');
+
+      // Set selected
+      $('select#item').val($(badge).data('item'));
+
+      // Set amount
+      $('#amount').val($(badge).data('amt'));
+
+      // Set per
+      $('select#per').val($(badge).data('per'));
+
+      $('.modal').data('update', badge).modal('show');
+
+    });
+  }
+
 	// add item event
 	$('#add-item').click(function(e){
 		e.preventDefault();
@@ -185,36 +247,15 @@
     }
     else
     {
-          // Add row to table
-          $('#item_list tr:last').after('<tr><td><span data-item="'+val+'" data-amt="'+amt+'" data-per="'+per+'" class="badge badge-info">'+netto_amt+'</span><i>'+name+'</i></td>\
-            <td style="text-align:right"><a href="" class="icon-edit edit-row"> edit</a>\
-            <a href="" class="icon-trash text-error remove-row"> remove</a></td></tr>');
-          
-          // remove row
-          $('a.remove-row').click(function(e){
-            e.preventDefault();
-            $(this).closest('tr').remove();
-          })
+      // Add row to table
+      $('#item_list tr:last').after('<tr><td><span data-item="'+val+'" data-amt="'+amt+'" data-per="'+per+'" class="badge badge-info">'+netto_amt+'</span><i>'+name+'</i></td>\
+        <td style="text-align:right"><a href="" class="icon-edit edit-row"> edit</a>\
+        <a href="" class="icon-trash text-error remove-row"> remove</a></td></tr>');
+      
+      add_item_events();
 
-          // Edit
-          $('a.edit-row').click(function(e){
-            e.preventDefault();
+      show_buttons();
 
-            // Find corresponding badge
-            var badge = $(this).closest('tr').find('.badge');
-
-            // Set selected
-            $('select#item').val($(badge).data('item'));
-
-            // Set amount
-            $('#amount').val($(badge).data('amt'));
-
-            // Set per
-            $('select#per').val($(badge).data('per'));
-
-            $('.modal').data('update', badge).modal('show');
-
-          })
     }
 
 

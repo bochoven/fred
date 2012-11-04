@@ -134,13 +134,18 @@ class Model extends KISS_Model
 		 * @return void
 		 * @author Bochoven, A.E. van
 		 **/
-		function delete_all()
+		function delete_all( $wherewhat = '', $bindings = '' )
 		{
 			$dbh = $this->getdbh();
+            if ( is_scalar( $bindings ) )
+                $bindings=$bindings ? array( $bindings ) : array();
             $sql = 'DELETE FROM '.$this->enquote( $this->tablename );
+            if ( $wherewhat )
+                $sql .= ' WHERE '.$wherewhat;
             $stmt = $dbh->prepare( $sql );
-            return $stmt->execute();
+            return $stmt->execute( $bindings );
 		}
+
 }
 
 //===============================================================

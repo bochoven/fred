@@ -57,12 +57,32 @@ class user extends Controller
 		$reservation->user_id = 'test_user'; // Fixme
 		$reservation->save();
 
+		if(isset($_POST['item_list']))
+		{
+			$newid = $reservation->id;
+			$res_obj = new Res_item();
+
+			// Delete all res items for this reservation
+			$res_obj->delete_all('res_id=?', $newid);
+
+			$res_obj->res_id = $newid;
+
+			// JSON decode item_list
+			foreach(json_decode($_POST['item_list']) AS $item)
+			{
+				$res_obj->id = '';
+				$res_obj->merge((array)$item)->save();
+			}
+
+		}
+
+
 		if( ! $id)
 		{
 			$out['redirect'] = url("user/reservation/$reservation->id");
 		}
 
-		echo json_encode($out);
+		echo json_encode($item);
 	}
 	//===============================================================
 

@@ -11,6 +11,8 @@
     <script src="//ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.2/jquery.dataTables.js"></script>
     <script src="<?=WEB_FOLDER?>assets/js/bootstrap.js"></script>
 	<script src="<?=WEB_FOLDER?>assets/js/datatables-bootstrap.js"></script>
+	<script src="<?=WEB_FOLDER?>assets/js/json2.js"></script>
+
 	
 	<script type="text/javascript">
 		$(document).ready(function() {
