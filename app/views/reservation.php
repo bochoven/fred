@@ -254,10 +254,9 @@
       
       add_item_events();
 
-      show_buttons();
-
     }
 
+    show_buttons();
 
     //close modal
 		$('.modal').data('update', '').modal('hide');
