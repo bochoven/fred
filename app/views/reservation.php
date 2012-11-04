@@ -30,10 +30,9 @@
          		</tr>
             <?$dbh = getdbh(); 
             $sql = "SELECT DISTINCT r.*, i.name FROM res_item r LEFT JOIN item i ON (r.short = i.short) WHERE r.res_id = $id";
-            $stmt = $dbh->prepare( $sql );
-            $stmt->execute();
-            ?>
-            <?while ( $item = $stmt->fetch( PDO::FETCH_OBJ ) ):?>
+            $stmt = $dbh->prepare( $sql );?>
+            <?if($stmt):?>
+            <?$stmt->execute(); while ( $item = $stmt->fetch( PDO::FETCH_OBJ ) ):?>
             <tr>
               <td><span data-item="<?=$item->short?>" data-amt="<?=$item->amt?>" data-per="<?=$item->per?>" class="badge badge-info"><?=$item->amt?></span><i><?=$item->name?></i></td>
               <td style="text-align:right"><a href="" class="icon-edit edit-row"> edit</a>
@@ -41,6 +40,7 @@
               </td>
             </tr>
             <?endwhile?>
+            <?endif?>
          	</table>
          	<p style="text-align: center">
          	<a href="/" id="add-item" class="btn btn-primary"><b class="icon-plus"></b> Add item</a>

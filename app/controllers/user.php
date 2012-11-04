@@ -82,7 +82,7 @@ class user extends Controller
 			$out['redirect'] = url("user/reservation/$reservation->id");
 		}
 
-		echo json_encode($item);
+		echo json_encode($out);
 	}
 	//===============================================================
 
