@@ -6,10 +6,16 @@ class user extends Controller
 
 	} 
 
-
 	//===============================================================
 
 	function index()
+	{
+		redirect('user/reservations');
+	}
+
+	//===============================================================
+
+	function inventory()
 	{
 		$data = array();
 		$obj = new View();

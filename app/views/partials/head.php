@@ -60,11 +60,17 @@
               Logged in as <a href="#" class="navbar-link">Username</a>
             </p>
             <ul class="nav">
-              <li class="active"><a href="<?=url()?>"><i class="icon-list-ul"></i> Inventory list</a></li>
-              <li><a href="<?=url('user/reservations')?>"><i class="icon-beaker"></i> Reservations</a></li>
-              <li><a href="<?=url('user/calendar')?>"><i class="icon-calendar"></i> Calendar</a></li>
-              <li><a href="<?=url('admin')?>"><i class="icon-wrench"></i> Administration</a></li>
-            </ul>
+              <?$page = $GLOBALS[ 'engine' ]->get_uri_string(); $navlist = array( 
+                'user/reservations' => (object) array('icon' => 'beaker', 'title' => 'Reservations'), 
+                'user/calendar' => (object) array('icon' => 'calendar', 'title' => 'Calendar'), 
+                'admin' => (object) array('icon' => 'wrench', 'title' => 'Administration'), 
+                'user/inventory' => (object) array('icon' => 'list-ul', 'title' => 'Inventory list') 
+                )?>
+                <?foreach($navlist as $url => $obj):?>
+              <li <?=$page==$url?'class="active"':''?>>
+                <a href="<?=url($url)?>"><i class="icon-<?=$obj->icon?>"></i> <?=$obj->title?></a>
+              </li>
+                <?endforeach?>
           </div><!--/.nav-collapse -->
         </div>
       </div>
