@@ -1,9 +1,10 @@
 <?$item = new Item($id);?>
+<?$name_obj = new Name($item->short);?>
 <?$prop = new Prop(); $props = $prop->retrieve_many('itemid = ?', $id)?>
 
 <div class="modal-content modal-top">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3><?=$item->name?></h3>
+    <h3><?=$name_obj->name?></h3>
 </div>
 <div class="modal-content">
 	<table class="table table-striped">
@@ -17,7 +18,7 @@
 		</tr>
 		<tr>
 			<th>Category</th>
-			<td><?=$item->cat?></td>
+			<td><?=$name_obj->cat?></td>
 		</tr>
 		<tr>
 			<th>Serial Number</th>

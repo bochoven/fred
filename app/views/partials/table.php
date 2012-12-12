@@ -1,4 +1,13 @@
-<?$item = new Item(); $p_article = (object) array('short' => '', 'cat' => '')?>
+<?$dbh= getdbh();$item = new Item(); $name = new Name(); // Init db
+        $sql = "SELECT i.id, i.short, 
+        		group_concat(i.brand, ', ') as brand,
+        		group_concat(i.loc, ', ') as loc, 
+        		sum(i.cnt) as total, n.name, n.cat 
+        		FROM item i 
+                LEFT JOIN name n ON (i.short = n.short) 
+                GROUP BY i.short";
+        $stmt = $dbh->prepare($sql);
+        $stmt->execute()?>
 <table class="table table-striped">
 	<thead>
 		<tr>
@@ -10,35 +19,20 @@
 			<th>Amount</th>
 		</tr>
 	</thead>
-	<?foreach($item->retrieve_many('1=1 ORDER BY cat, short') as $article):?>
-	<?if($article->cat == $p_article->cat && $article->short == $p_article->short):?>
-		<?$p_article->cnt++?>
-		<?$p_article->rs['multi'] = 1?>
-	<?else:?>
+	<?while($article = $stmt->fetch( PDO::FETCH_OBJ )):?>
 	
-	<?if($p_article->short):?>
 	<tr>
-		<td><?=$p_article->short?></td>
-		<td><a data-toggle="modal" data-target="#myModal" href="<?=url("user/detail/$p_article->id")?>"><?=$p_article->name?></a></td>
-		<td><?=$p_article->brand?></td>
-		<td><?=$p_article->loc?></td>
-		<td><?=$p_article->cat?></td>
-		<td><span class="badge badge-info"><?=$p_article->cnt?></span><?=isset($p_article->rs['multi'])?'*':''?></td>
+		<td><?=$article->short?></td>
+		<td><a data-toggle="modal" data-target="#myModal" href="<?=url("user/detail/$article->id")?>"><?=$article->name?></a></td>
+		<td><?=$article->brand?></td>
+		<td><?=$article->loc?></td>
+		<td><?=$article->cat?></td>
+		<td><span class="badge badge-info"><?=$article->total?></span></td>
 	</tr>
-	<?endif?>
 	
-	<?$p_article = $article?>
+	
+	<?endwhile?>
 
-	<?endif?>
-	<?endforeach?>
-	<tr>
-		<td><?=$p_article->short?></td>
-		<td><a data-toggle="modal" data-target="#myModal" href="<?=url("user/detail/$p_article->id")?>"><?=$p_article->name?></a></td>
-		<td><?=$p_article->brand?></td>
-		<td><?=$p_article->loc?></td>
-		<td><?=$p_article->cat?></td>
-		<td><span class="badge badge-info"><?=$p_article->cnt?></span></td>
-	</tr>
 </table>
 
 <div class="modal hide" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

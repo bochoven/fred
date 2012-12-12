@@ -30,6 +30,12 @@
     $('input[name=file]').change(function(e){
       $('p.uploadbutton').show();
     })
+
+    $('form').submit(function(e)
+    {
+      //e.preventDefault();
+      $('button[type=submit]').addClass('btn-success').text('Uploading...');
+    })
   </script>
 
 

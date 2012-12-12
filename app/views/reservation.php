@@ -29,7 +29,7 @@
          			<th></th>
          		</tr>
             <?$dbh = getdbh(); 
-            $sql = "SELECT DISTINCT r.*, i.name FROM res_item r LEFT JOIN item i ON (r.short = i.short) WHERE r.res_id = $id";
+            $sql = "SELECT DISTINCT r.*, n.name FROM res_item r LEFT JOIN name n ON (r.short = n.short) WHERE r.res_id = $id";
             $stmt = $dbh->prepare( $sql );?>
             <?if($stmt):?>
             <?$stmt->execute(); while ( $item = $stmt->fetch( PDO::FETCH_OBJ ) ):?>
@@ -60,8 +60,13 @@
 
     	<select name="item" id="item">
 
-        <?$item = new Item(); $p_article = (object) array('short' => '', 'cat' => ''); $cat=''?>
-      <?foreach($item->retrieve_many('1=1 ORDER BY cat, short') as $article):?>
+        <?$cat = ''; $dbh= getdbh();$item = new Item(); $name = new Name(); // Init db
+        $sql = "SELECT * FROM item i 
+                LEFT JOIN name n ON (i.short = n.short) 
+                GROUP BY i.short ORDER BY cat, short ";
+        $stmt = $dbh->prepare($sql);
+        $stmt->execute()?>
+      <?while($article = $stmt->fetch( PDO::FETCH_OBJ )):?>
 
 
         <?if($article->short == $p_article->short):?>
@@ -85,7 +90,7 @@
           <?$p_article = $article?>
 
         <?endif?>
-      <?endforeach?>
+      <?endwhile?>
 
         </optgroup>
     	</select>

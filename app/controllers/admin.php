@@ -48,6 +48,11 @@ class admin extends Controller
 					$item->delete_all();
 					$prop = new Prop();
 					$prop->delete_all();
+					$name_obj = new Name();
+					$name_obj->delete_all();
+
+					// Namelist holds the entries for the Name model
+					$namelist = array();
 					
 					// Loop through rows skip first row
 					for($row = 2;$row <= $data->rowcount($sheet); $row++)
@@ -59,12 +64,20 @@ class admin extends Controller
 						
 						// Holds properties
 						$props = array();
+
+						// Temporary storage for name and cat
+						$coltemp = array();
 						
 						// Loop through columns
 						foreach($colinfo AS $col => $colname)
 						{
 							$val = $data->val($row,$col,$sheet);
-							if(trim($val) && strpos($colname, 'prop') === 0)
+							if($colname == 'name' OR $colname == 'cat')
+							{
+								if(trim($val))
+									$coltemp[$colname] = trim($val);
+							}
+							elseif(trim($val) && strpos($colname, 'prop') === 0)
 							{
 								$props[substr($colname, 5)] = $val;
 							}
@@ -75,7 +88,14 @@ class admin extends Controller
 							
 						}
 						$item->save();
-						$id = $item->id; 						
+						$id = $item->id;
+
+						// Set namelist item
+						foreach($coltemp as $prop => $val)
+						{
+							$namelist[$item->short][$prop] = $val;	
+						}
+										
 						
 						// Process props
 						if($props)
@@ -91,6 +111,15 @@ class admin extends Controller
 								$prop->save();
 							}
 						}	
+					}
+
+					// Store namelist
+					foreach($namelist as $short => $vals)
+					{
+						$name_obj->id = '';
+						$name_obj->short = $short;
+						$name_obj->merge($vals);
+						$name_obj->save();
 					}
 
 					// Move excel to downloads folder
