@@ -1,11 +1,7 @@
 <?$dbh= getdbh();$item = new Item(); $name = new Name(); // Init db
-        $sql = "SELECT i.id, i.short, 
-        		group_concat(i.brand, ', ') as brand,
-        		group_concat(i.loc, ', ') as loc, 
-        		sum(i.cnt) as total, n.name, n.cat 
+        $sql = "SELECT i.*, n.name, n.cat 
         		FROM item i 
-                LEFT JOIN name n ON (i.short = n.short) 
-                GROUP BY i.short";
+                LEFT JOIN name n ON (i.short = n.short)";
         $stmt = $dbh->prepare($sql);
         $stmt->execute()?>
 <table class="table table-striped">
@@ -27,7 +23,7 @@
 		<td><?=$article->brand?></td>
 		<td><?=$article->loc?></td>
 		<td><?=$article->cat?></td>
-		<td><span class="badge badge-info"><?=$article->total?></span></td>
+		<td><span class="badge badge-info"><?=$article->cnt?></span></td>
 	</tr>
 	
 	
